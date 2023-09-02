@@ -5,7 +5,7 @@ import data from "./final_data.json" assert { type: "json" };
 const api = "https://peakato.com/api/v1";
 
 const openai = new OpenAI({
-  apiKey: "", // defaults to process.env["OPENAI_API_KEY"]
+  apiKey: "shit",
 });
 
 const loginAdmin = async () => {
@@ -55,23 +55,25 @@ const sendNewRecordToPeakato = async (chatGptResult, index) => {
   console.log("mine", chatGptResult);
   if (chatGptResult == undefined) {
     await new Promise((resolve) => setTimeout(resolve, 30000));
-    fs.appendFileSync(
-      "Output.txt",
-      `${index + 1} : ${"limit rate reached"} \n`
-    );
+    let newData = data[index];
+    newData.guideRephrase = "limit reached";
+    var jsonContent = JSON.stringify(newData);
+    fs.appendFileSync("OutPut.json", " , \n" + jsonContent);
+
     return;
   }
   if (chatGptResult != "undefined") {
-    fs.appendFileSync(
-      "Output.txt",
-      `${index + 1} : ${
-        chatGptResult[0]?.message?.content
-          ? chatGptResult[0]?.message?.content
-          : "undefined"
-      } \n`
-    );
+    let newData = data[index];
+    newData.guideRephrase = chatGptResult[0]?.message?.content
+      ? chatGptResult[0]?.message?.content
+      : "";
+    var jsonContent = JSON.stringify(newData);
+    fs.appendFileSync("OutPut.json", " , \n" + jsonContent);
   } else {
-    fs.appendFileSync("Output.txt", `${index + 1} : undefined \n`);
+    let newData = data[index];
+    newData.guideRephrase = "";
+    var jsonContent = JSON.stringify(newData);
+    fs.appendFileSync("OutPut.json", " , \n" + jsonContent);
   }
 };
 
