@@ -22,7 +22,7 @@ const handelLoopForAllData = async (list) => {
   for (i == 0; i < list.length; i++) {
     let chatGptResult = await chatGptMakeRequest(list[i]);
     await sendNewRecordToPeakato(chatGptResult, i);
-    await new Promise((resolve) => setTimeout(resolve, 22000));
+    await new Promise((resolve) => setTimeout(resolve, 30000));
   }
 };
 
@@ -54,7 +54,7 @@ const chatGptMakeRequest = async (message) => {
 const sendNewRecordToPeakato = async (chatGptResult, index) => {
   console.log("mine", chatGptResult);
   if (chatGptResult == undefined) {
-    await new Promise((resolve) => setTimeout(resolve, 30000));
+    await new Promise((resolve) => setTimeout(resolve, 60000));
     let newData = data[index];
     newData.benefits_list_rephrase = "limit reached";
     var jsonContent = JSON.stringify(newData);
